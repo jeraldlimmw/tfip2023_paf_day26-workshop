@@ -1,8 +1,9 @@
 package day26workshop.gameapp.model;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.joda.time.LocalDateTime;
 
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
@@ -12,12 +13,12 @@ public class Games {
     private Integer offset;
     private Integer limit;
     private Integer total;
-    private LocalDate timestamp;
+    private LocalDateTime timestamp;
 
     public Games() {
     }
     
-    public Games(Integer offset, Integer limit, Integer total, LocalDate timestamp) {
+    public Games(Integer offset, Integer limit, Integer total, LocalDateTime timestamp) {
         this.offset = offset;
         this.limit = limit;
         this.total = total;
@@ -48,10 +49,10 @@ public class Games {
     public void setTotal(Integer total) {
         this.total = total;
     }
-    public LocalDate getTimestamp() {
+    public LocalDateTime getTimestamp() {
         return timestamp;
     }
-    public void setTimestamp(LocalDate localDate) {
+    public void setTimestamp(LocalDateTime localDate) {
         this.timestamp = localDate;
     }
 

@@ -10,6 +10,7 @@ public class Game {
     private String name;
     private Integer year;
     private Integer ranking;
+    // average field missing
     private Integer users_rated;
     private String url;
     private String image;
@@ -77,6 +78,7 @@ public class Game {
                 + users_rated + ", url=" + url + ", image=" + image + "]";
     }
 
+    // convert from bson Document to Game object
     public static Game create(Document d) {
         Game game = new Game();
         game.setGid(d.getInteger("gid"));
@@ -90,6 +92,7 @@ public class Game {
         return game;
     }
 
+    // convert from Game object to JSON
     public JsonObject toJson() {
         return Json.createObjectBuilder()
         .add("gid", getGid())

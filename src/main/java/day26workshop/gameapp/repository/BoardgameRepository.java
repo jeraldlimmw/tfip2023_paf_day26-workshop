@@ -26,6 +26,8 @@ public class BoardgameRepository {
         Pageable pageable = PageRequest.of(offset, limit);
         query.with(pageable);
 
+        // mongoTemplate.find returns a list of documents
+        // each document is converted to JSON, and then added to list
         return mongoTemplate.find(query, Document.class, "games")
             .stream()
             .map(d -> Game.create(d))
@@ -49,6 +51,7 @@ public class BoardgameRepository {
         Query query = new Query();
         query.addCriteria(Criteria.where("gid").is(gameId));
 
+        // returns only one object, in this case, a Game object
         return mongoTemplate.findOne(query, Game.class, "games");
     }
     

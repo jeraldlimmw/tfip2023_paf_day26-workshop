@@ -1,8 +1,8 @@
 package day26workshop.gameapp.controller;
 
-import java.time.LocalDate;
 import java.util.List;
 
+import org.joda.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -26,48 +26,21 @@ public class BoardgameController {
     
     // to fetch boardgames
     @GetMapping(path="/games")
-    public ResponseEntity<String> getBoardgame(@RequestParam Integer offset, 
-            @RequestParam Integer limit){
+    public ResponseEntity<String> getBoardgame(
+            @RequestParam(defaultValue = "0") Integer offset, 
+            @RequestParam(defaultValue = "25") Integer limit){
         
         List<Game> gamesList = bgRepo.getAllGames(offset, limit);
-        Games games = new Games();
-        games.setGames(gamesList);
-        games.setOffset(offset);
-        games.setLimit(limit);
-        games.setTotal(gamesList.size());
-        games.setTimestamp(LocalDate.now());
-
-        JsonObject result = Json.createObjectBuilder()
-                .add("boardgames", games.toJson())
-                .build();
-
-        return ResponseEntity
-            .status(HttpStatus.OK)
-            .contentType(MediaType.APPLICATION_JSON)
-            .body(result.toString());
+        return getGamesList(gamesList, offset, limit);
     }
 
     @GetMapping(path="/games/rank")
-    public ResponseEntity<String> getSortedGamesRanking(@RequestParam Integer offset, 
-            @RequestParam Integer limit) {
+    public ResponseEntity<String> getSortedGamesRanking(
+            @RequestParam(defaultValue = "0") Integer offset, 
+            @RequestParam(defaultValue = "25") Integer limit) {
 
         List<Game> gamesList = bgRepo.getSortedBoardGames(offset, limit);
-        Games games = new Games();
-        games.setGames(gamesList);
-        games.setOffset(offset);
-        games.setLimit(limit);
-        games.setTotal(gamesList.size());
-        games.setTimestamp(LocalDate.now());
-
-        JsonObject result = Json.createObjectBuilder()
-                .add("boardgames", games.toJson())
-                .build();
-
-        return ResponseEntity
-            .status(HttpStatus.OK)
-            .contentType(MediaType.APPLICATION_JSON)
-            .body(result.toString());
-
+        return getGamesList(gamesList, offset, limit);
     }
 
     @GetMapping(path="/game/{gameId}")
@@ -78,5 +51,23 @@ public class BoardgameController {
             .status(HttpStatus.OK)
             .contentType(MediaType.APPLICATION_JSON)
             .body(game.toJson().toString());
+    }
+
+    private ResponseEntity<String> getGamesList(List<Game> gamesList, Integer offset, Integer limit) {
+        Games games = new Games();
+        games.setGames(gamesList);
+        games.setOffset(offset);
+        games.setLimit(limit);
+        games.setTotal(gamesList.size());
+        games.setTimestamp(LocalDateTime.now());
+
+        JsonObject result = Json.createObjectBuilder()
+                .add("boardgames", games.toJson())
+                .build();
+
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(result.toString());
     }
 }
